@@ -142,7 +142,7 @@ begin
       wait(500);
       FindType(ItemType, backpack);
       wait(100);
-      MoveItem(finditem, 0, CharBackpack, 0, 0, 0); // CharBackpack = smelt Exceptionals, ExceptionalBag = save Exceptionals in ExceptionalBag
+      MoveItem(finditem, 0, ExceptionalBag, 0, 0, 0); // CharBackpack = smelt Exceptionals, ExceptionalBag = save Exceptionals in ExceptionalBag
       wait(100);
     end;
 
