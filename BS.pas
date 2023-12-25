@@ -20,37 +20,27 @@ Ingots = $1BF2;
 ForgeObj = $5E293A96;
 HammerType = $13E3;
 TongsType = $0FBB;
+SmeltExcept = 1;
 
+MAX_EXCEPTIONAL_COUNT = 999;  // Adjust the maximum count as needed
+MAX_PERFECT_COUNT = 999;      // Adjust the maximum count as needed
+MAX_LEGENDARY_COUNT = 999;    // Adjust the maximum count as needed
 
 
 procedure Resmelt;
 begin
 findtype(ItemType,backpack);
-while FindCount() > 0 do
-    repeat
-    Clearjournal();
-    checksave;
-     k:=0;
-     TimeStart:=Now;
-      repeat
-       UseObject(FindType(TongsType,Backpack));
-       k := k + 1;
-        wait(2000);
-       until (InJournalBetweenTimes('What do you wish to smelt into ingots?|has to be', TimeStart, Now)<>-1) or (k > 7);
+	if FindCount() > 1 then
+		Clearjournal();
+		UseObject(FindType(TongsType,Backpack));
+		wait(500);
 		findtype(ItemType,backpack);
 		WaitTargetObject(finditem);
-		 wait(1000);
-         WaitTargetObject(ForgeObj);
-              repeat
-               wait(100);
-               k := k + 1;
-              until (InJournalBetweenTimes('You turned|ailed|That cannot be melted down!', TimeStart, Now)<>-1) or (k > 300);
-              findtype(ItemType,backpack);
-    Clearjournal();
-    until findcount () = 0  ;
-findtype(ItemType,backpack);
-wait(1000);
+		wait(1000);
+		WaitTargetObject(ForgeObj);
+		wait(3000);
 end;
+
 
 procedure CheckHammer;
    begin
@@ -69,33 +59,52 @@ begin
 
   FindType(ItemType, LegendaryBag);
   itemCount := FindCount;
-  if itemCount <> 0 then
     AddToSystemJournal('Legendary: ' + IntToStr(itemCount));
   Wait(100);
   FindType(ItemType, PerfectBag);
   itemCount := FindCount;
-  if itemCount <> 0 then
     AddToSystemJournal('Perfect: ' + IntToStr(itemCount));
   Wait(100);
   FindType(ItemType, ExceptionalBag);
   itemCount := FindCount;
-  if itemCount <> 0 then
+  if SmeltExcept = 0 then
     AddToSystemJournal('Exceptional: ' + IntToStr(itemCount));
   Wait(100);
   FindType(HammerType, Backpack);
   itemCount := FindCount;
-  if itemCount <> 0 then
     AddToSystemJournal('Hammers: ' + IntToStr(itemCount));
   Wait(100);
   FindType(TongsType, Backpack);
   itemCount := FindCount;
-  if itemCount <> 0 then
     AddToSystemJournal('Tongs: ' + IntToStr(itemCount));
   Wait(100);
   FindType(Ingots, Backpack);
   itemCount := FindFullQuantity;
-  if itemCount <> 0 then
     AddToSystemJournal('Ingots:' + IntToStr(itemCount));
+end;
+
+procedure CheckStopConditions;
+begin
+  FindType(ItemType, ExceptionalBag);
+  if FindCount >= MAX_EXCEPTIONAL_COUNT then
+  begin
+    AddToSystemJournal('Reached maximum exceptional count. Stopping script.');
+    Halt;
+  end;
+
+  FindType(ItemType, PerfectBag);
+  if FindCount >= MAX_PERFECT_COUNT then
+  begin
+    AddToSystemJournal('Reached maximum perfect count. Stopping script.');
+    Halt;
+  end;
+
+  FindType(ItemType, LegendaryBag);
+  if FindCount >= MAX_LEGENDARY_COUNT then
+  begin
+    AddToSystemJournal('Reached maximum legendary count. Stopping script.');
+    Halt;
+  end;
 end;
 
 
@@ -118,13 +127,12 @@ begin
 		 wait(500)
 		 WaitGump('0x13fe');
 repeat
-wait(100);
-k := k + 1;
 wait(500);
-until (InJournalBetweenTimes('stop', TimeStart, Now)<>-1) or (k > 300);
+until (InJournalBetweenTimes('stop', TimeStart, Now)<>-1);
 wait(100);
 if InJournal('Legendary') > -1 then
 	begin
+		CheckStopConditions;
 	    UoSay('Finally the Masterpiece! (Legendary)');
 		ClearJournal;
 		Findtype(ItemType,backpack);
@@ -135,6 +143,7 @@ if InJournal('Legendary') > -1 then
 	
 if InJournal('Perfect')>-1 then
 	begin
+		CheckStopConditions;
 		UoSay('That one looks really good! (Perfect)');
 		ClearJournal;
 		Findtype(ItemType,backpack);
@@ -143,16 +152,30 @@ if InJournal('Perfect')>-1 then
 		wait(100);
 	end;
 	
-if InJournal('Exceptional')>-1 then
-	begin
-		UoSay('This one is not bad! (Exceptional)');
-		ClearJournal;
-		wait(500);
-		Findtype(ItemType,backpack);
-		wait(100);
-		MoveItem(finditem, 0, ExceptionalBag, 0, 0, 0); // CharBackpack = smelt Exceptionals, ExceptionalBag = save Exceptionals in ExceptionalBag
-		wait(100);
-	end;
+if InJournal('Exceptional') > -1 then
+begin
+    UoSay('This one is not bad! (Exceptional)');
+    
+    if SmeltExcept = 0 then
+    begin
+		CheckStopConditions;
+        ClearJournal;
+        wait(500);
+        Findtype(ItemType, backpack);
+        wait(100);
+        MoveItem(finditem, 0, ExceptionalBag, 0, 0, 0);
+        wait(100);
+    end
+    else if SmeltExcept = 1 then
+    begin
+        ClearJournal;
+        wait(500);
+        Findtype(ItemType, backpack);
+        wait(100);
+        MoveItem(finditem, 0, CharBackpack, 0, 0, 0);
+        wait(100);
+    end;
+end;
 	
 if InJournal('Success')<>-1 then
 	begin
