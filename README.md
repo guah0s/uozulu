@@ -2,7 +2,7 @@
 
     
 **Basic variables:**
-_CharBackpack_ - Your character's backpack
+_CharBackpack_ - Your character's backpack    
 _LegendaryBag_ - A container in your character's backpack to store Legendary items
 _PerfectBag_ = A container in your character's backpack to store Perfect items
 _ExceptionalBag_ = A container in your character's backpack to store Exceptional items
