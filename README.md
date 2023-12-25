@@ -1,4 +1,4 @@
-**Ultima Online Zulu Hotel Stealth Script for Blacksmithy**
+**Ultima Online Zulu Hotel Stealth Script for Blacksmithy:**
 
     
 **Basic variables:**
