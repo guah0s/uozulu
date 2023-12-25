@@ -1,7 +1,7 @@
 **Ultima Online Zulu Hotel Stealth Script for Blacksmithy:**
 
     
-**Basic variables:**
+**Basic variables:**    
 _CharBackpack_ - Your character's backpack    
 _LegendaryBag_ - A container in your character's backpack to store Legendary items    
 _PerfectBag_ = A container in your character's backpack to store Perfect items    
