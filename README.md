@@ -1,7 +1,16 @@
-**BS-Smelt-Katana.pas** 
-  
-_В бекпак берем 3 сумки, набор молотков и набор тонгов, слитки. В переменных прописываем ID этих трех сумок для Legendary, Perfect и Exceptional вещей соответственно. Берем в руки молоток и запускаем скрипт. Скрипт кует катану и кладет ее в соответствующую сумку. Если катана обычная, то переплавляет ее. В лог Стелса пишет количество скрафченных вещей и количество оставшихся инструментов и металла._
+**Ultima Online Zulu Hotel Stealth Script for Blacksmithy**
 
-**BS-Smelt-Katana_noexp.pas**
-  
-_В бекпак берем 3 сумки, набор молотков и набор тонгов, слитки. В переменных прописываем ID этих трех сумок для Legendary, Perfect и Exceptional вещей соответственно. Берем в руки молоток и запускаем скрипт. Скрипт кует катану и кладет ее в соответствующую сумку. Если катана обычная или Exceptional то переплавляет ее. В лог Стелса пишет количество скрафченных вещей и количество оставшихся инструментов и металла._
+    
+**Basic variables:**    
+_CharBackpack_ - Your character's backpack    
+_LegendaryBag_ - A container in your character's backpack to store Legendary items    
+_PerfectBag_ = A container in your character's backpack to store Perfect items    
+_ExceptionalBag_ = A container in your character's backpack to store Exceptional items    
+_ForgeObj_ - ID of a forge nearby    
+_SmeltExcept_ - if set to 1, Exceptional items are smelted just like the regular ones, if set to 0, Exceptional items are stored in the ExceptionalBag    
+    
+    
+Maximum number of items of certain quality before the script stops:    
+_MAX_EXCEPTIONAL_COUNT_ = 999;  // Adjust the maximum count as needed    
+_MAX_PERFECT_COUNT_ = 999;      // Adjust the maximum count as needed    
+_MAX_LEGENDARY_COUNT_ = 999;    // Adjust the maximum count as needed    
