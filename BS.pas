@@ -14,7 +14,6 @@ const
   // Item to craft:
   // ItemType = $1401; // Kriss
   ItemType = $13FE; // Katana
-  ItemCost = 5;
 
   // Tools and Objects:
   Ingots = $1BF2;
@@ -30,7 +29,7 @@ const
 procedure Resmelt;
 begin
   findtype(ItemType, backpack);
-  if FindCount() > 1 then
+  while FindCount() > 0 do
   begin
     Clearjournal();
     UseObject(FindType(TongsType, Backpack));
@@ -77,7 +76,7 @@ begin
   wait(500);
   WaitGump('3010');
   wait(500);
-  WaitGump('0x13fe');
+  WaitGump('0x' + IntToHex(ItemType, 4)); 
 
   repeat
     wait(500);
