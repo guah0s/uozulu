@@ -1,6 +1,7 @@
 **Ultima Online Zulu Hotel Stealth Scripts:**
-
-Crafter Blacksmithy (BS.pas):    
+***
+        
+**Crafter Blacksmithy (BS.pas): **   
 Basic variables:    
 CharBackpack - Your character's backpack    
 LegendaryBag - A container in your character's backpack to store Legendary items    
@@ -17,3 +18,5 @@ MAX_LEGENDARY_COUNT = 999; // Adjust the maximum count as needed
 
 
 **Crafter Mining in Minoc mine with unloading gathered resources into bank (Mining_Minoc_unload.pas):**
+Basic variables:    
+IngotChest - A container in your character's backpack to store gathered ingots into.
