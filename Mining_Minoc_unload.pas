@@ -2,22 +2,14 @@ Program mining;
 
 {$Include 'all.inc'}
 
-type
-  LumbRecord = Record
-    x, y, tt: integer;
-  end;
-
 var
   x, y, k: integer;
   ctime: TDateTime;
   mn1, mf1, mf2, ms1, ms2: Integer;
 
 const
-  Pickaxe1 = $0E85;
-  Pickaxe2 = $0E85;
+  Pickaxe = $0E85;
   IngotType = $1BF2;
-
-  typeTTools = $1EBA;
 
   BankX = 2509; //Minoc Bank coordinates
   BankY = 537;
@@ -31,9 +23,7 @@ begin
   Result := true;
   if (ObjAtLayerEx(RhandLayer, self) = 0) then
   begin
-    tmpser := findtype(Pickaxe1, backpack);
-    if tmpser = 0 then
-      tmpser := findtype(Pickaxe2, backpack);
+    tmpser := findtype(Pickaxe, backpack);
     if tmpser = 0 then
     begin
       Result := false;
