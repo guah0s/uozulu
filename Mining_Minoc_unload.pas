@@ -149,7 +149,7 @@ begin
   end;
 end;
 
-procedure goUpload;
+procedure BankUnload;
 label
   m, g;
 Begin
@@ -168,7 +168,7 @@ m:
 
   ignoreReset;
 
-  AddToSystemJournal('Backpack is full. Unloading into the bank...');
+  AddToSystemJournal('Moving to the bank to unload');
   NewMoveXY(2563, 529, true, 1, true);
   NewMoveXY(2510, 540, true, 1, true);
   NewMoveXY(BankX, BankY, true, 1, true);
@@ -206,7 +206,7 @@ Begin
       CheckPick
       If weight > (MaxWeight - 50) then
         //weight left before unload
-        goUpload;
+        BankUnload;
       wait(3000);
     end;
   end;
