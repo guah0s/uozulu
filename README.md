@@ -1,5 +1,6 @@
-Ultima Online Zulu Hotel Stealth Scripts:
+**Ultima Online Zulu Hotel Stealth Scripts:**
 
+    
 Basic variables:
 CharBackpack - Your character's backpack
 LegendaryBag - A container in your character's backpack to store Legendary items
