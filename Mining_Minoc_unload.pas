@@ -8,7 +8,7 @@ var
   mn1, mf1, mf2, ms1, ms2: Integer;
 
 const
-  Pickaxe = $0E85;
+  PickaxeType = $0E85;
   IngotType = $1BF2;
 
   BankX = 2509; //Minoc Bank coordinates
@@ -23,7 +23,7 @@ begin
   Result := true;
   if (ObjAtLayerEx(RhandLayer, self) = 0) then
   begin
-    tmpser := findtype(Pickaxe, backpack);
+    tmpser := findtype(PickaxeType, backpack);
     if tmpser = 0 then
     begin
       Result := false;
@@ -143,7 +143,8 @@ procedure BankUnload;
 label
   m, g;
 Begin
-  AddToSystemJournal('Smelting ore into ingots...');
+  AddToSystemJournal('***');
+  AddToSystemJournal('Backpack is full of ore, smelting it into ingots..');
   NewMoveXY(2573, 458, true, 1, false);
 m:
   FindType($19B8, backpack);
@@ -158,14 +159,30 @@ m:
 
   ignoreReset;
 
-  AddToSystemJournal('Moving to the bank to unload');
+  AddToSystemJournal('Moving to the bank..');
   NewMoveXY(2563, 529, true, 1, true);
   NewMoveXY(2510, 540, true, 1, true);
   NewMoveXY(BankX, BankY, true, 1, true);
   UoSay('bank');
   wait(1000);
 
-  AddToSystemJournal('Storing Ingots into the bank...');
+  AddToSystemJournal('Storing Ingots into the bank:');
+  AddToSystemJournal(
+  'Iron:' + IntToStr(CountEx(IngotType, $0000, backpack)) + ' ' +
+  'Copper:' + IntToStr(CountEx(IngotType, $08EB, backpack)) + ' ' +
+  'BD:' + IntToStr(CountEx(IngotType, $0425, backpack)) + ' ' +
+  'Pagan:' + IntToStr(CountEx(IngotType, $050C, backpack)) + ' ' +
+  'Silver:' + IntToStr(CountEx(IngotType, $04EB, backpack)) + ' ' +
+  'Spectral:' + IntToStr(CountEx(IngotType, $0483, backpack)) + ' ' +
+  'Lava:' + IntToStr(CountEx(IngotType, $0486, backpack)) + ' ' +
+  'Ice:' + IntToStr(CountEx(IngotType, $0480, backpack)) + ' ' +
+  'Mythril:' + IntToStr(CountEx(IngotType, $0492, backpack)) + ' ' +
+  'Basilisk:' + IntToStr(CountEx(IngotType, $0487, backpack)) + ' ' +
+  'Sun:' + IntToStr(CountEx(IngotType, $0514, backpack)) + ' ' +
+  'Daedra:' + IntToStr(CountEx(IngotType, $0494, backpack)) + ' ' +
+  'Doom:' + IntToStr(CountEx(IngotType, $049F, backpack)) + ' ' +
+  'Zulu:' + IntToStr(CountEx(IngotType, $0488, backpack))
+);
 
 g:
   FindType($1BF2, backpack);
@@ -176,7 +193,7 @@ g:
     goto g;
   end;
 
-  AddToSystemJournal('Go back to the mine.');
+  AddToSystemJournal('Going back to the mine..');
 
   NewMoveXY(2563, 529, true, 1, true);
   MoveXYZ(2562, 508, -40, 1, 0, true);
@@ -194,7 +211,7 @@ Begin
       MiningAround;
       DropMap;
       CheckPick
-      If weight > (MaxWeight - 50) then
+      If weight > (MaxWeight - 40) then
         //weight left before unload
         BankUnload;
       wait(3000);
