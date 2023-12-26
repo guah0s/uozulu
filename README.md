@@ -1,7 +1,7 @@
 **Ultima Online Zulu Hotel Stealth Scripts:**
 ***
         
-**Crafter Blacksmithy (BS.pas): **   
+**Crafter Blacksmithy (BS.pas):**
 Basic variables:    
 CharBackpack - Your character's backpack    
 LegendaryBag - A container in your character's backpack to store Legendary items    
