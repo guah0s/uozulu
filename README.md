@@ -8,6 +8,7 @@ _LegendaryBag_ - A container in your character's backpack to store Legendary ite
 _PerfectBag_ = A container in your character's backpack to store Perfect items    
 _ExceptionalBag_ = A container in your character's backpack to store Exceptional items    
 _ForgeObj_ - ID of a forge nearby    
+_ItemType_ - Uncomment an item type you want to craft        
 _SmeltExcept_ - if set to 1, Exceptional items are smelted just like the regular ones, if set to 0, Exceptional items are stored in the ExceptionalBag    
     
 Maximum number of items of certain quality before the script stops:    
