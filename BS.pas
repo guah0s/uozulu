@@ -2,7 +2,7 @@ Program BlackSmithy;
 {$Include 'all.inc'}
 
 var
-  TimeStart : TDateTime;
+  TimeStart: TDateTime;
 
 const
   // Containers setup:
@@ -31,14 +31,15 @@ const
   SmeltExcept = 1; // 1 = smelt exceptional items into ingots, 0 = store exceptional items in the ExceptionalBag
   SmeltPerfect = 1; // 1 = smelt perfect items into ingots, 0 = store perfect items in the PerfectBag
 
-  MAX_EXCEPTIONAL_COUNT = 999;  // Adjust the maximum count as needed (don't forget to set SmeltExcept = 0)
-  MAX_PERFECT_COUNT = 999;      // Adjust the maximum count as needed (don't forget to set SmeltPerfect = 0)
-  MAX_LEGENDARY_COUNT = 999;    // Adjust the maximum count as needed
+  MAX_EXCEPTIONAL_COUNT = 999; // Adjust the maximum count as needed (don't forget to set SmeltExcept = 0)
+  MAX_PERFECT_COUNT = 999;     // Adjust the maximum count as needed (don't forget to set SmeltPerfect = 0)
+  MAX_LEGENDARY_COUNT = 999;   // Adjust the maximum count as needed
 
 procedure Resmelt;
 begin
   repeat
     Clearjournal();
+    CancelMenu;
     UseObject(FindType(TongsType, Backpack));
     wait(500);
     findtype(ItemType, backpack);
@@ -46,8 +47,8 @@ begin
     wait(1000);
     WaitTargetObject(ForgeObj);
     wait(3000);
-	FindType(ItemType, backpack)
-  until FindCount() = 0;
+    FindType(ItemType, backpack)
+  until FindCount() < 1;
 end;
 
 procedure CheckStopConditions;
@@ -165,34 +166,37 @@ end;
 
 procedure CraftItem;
 begin
-	UseObject(ObjAtLayerEx(RhandLayer, self));
-	findtype(Ingots, backpack);
-	WaitTargetObject(finditem);
-	wait(2000);
-	if ItemType = $13FE then
-	HandleGumpsKatana(ItemType);
-	if ItemType = $1401 then
-	HandleGumpsKryss(ItemType);
-	if ItemType = $0F63 then
-	HandleGumpsSpear(ItemType);	
-	if ItemType = $1415 then
-	HandleGumpsBreastplate(ItemType);
-	if ItemType = $1414 then
-	HandleGumpsGloves(ItemType);
-	if ItemType = $1413 then
-	HandleGumpsGloves(ItemType);
-	if ItemType = $1412 then
-	HandleGumpsHelmet(ItemType);
-	if ItemType = $1411 then
-	HandleGumpsLegs(ItemType);
-	if ItemType = $1410 then
-	HandleGumpsLegs(ItemType);
-	if ItemType = $1B76 then
-	HandleGumpsShield(ItemType);
-	
-repeat
+  CancelMenu;
+  UseObject(ObjAtLayerEx(RhandLayer, self));
+  findtype(Ingots, backpack);
+  WaitTargetObject(finditem);
+  wait(2000);
+
+  if ItemType = $13FE then
+    HandleGumpsKatana(ItemType);
+  if ItemType = $1401 then
+    HandleGumpsKryss(ItemType);
+  if ItemType = $0F63 then
+    HandleGumpsSpear(ItemType);
+  if ItemType = $1415 then
+    HandleGumpsBreastplate(ItemType);
+  if ItemType = $1414 then
+    HandleGumpsGloves(ItemType);
+  if ItemType = $1413 then
+    HandleGumpsGloves(ItemType);
+  if ItemType = $1412 then
+    HandleGumpsHelmet(ItemType);
+  if ItemType = $1411 then
+    HandleGumpsLegs(ItemType);
+  if ItemType = $1410 then
+    HandleGumpsLegs(ItemType);
+  if ItemType = $1B76 then
+    HandleGumpsShield(ItemType);
+
+  repeat
     wait(1000);
   until (InJournalBetweenTimes('stop', TimeStart, Now) <> -1) or (InJournal('Cancelled') <> -1);
+
   wait(500);
 
   if InJournal('Legendary') > -1 then
@@ -208,8 +212,8 @@ repeat
   if InJournal('Perfect') > -1 then
   begin
     UoSay('That one looks really good! (Perfect)');
-	
-   if SmeltPerfect = 0 then
+
+    if SmeltPerfect = 0 then
     begin
       ClearJournal;
       wait(500);
@@ -218,7 +222,7 @@ repeat
       MoveItem(finditem, 0, PerfectBag, 0, 0, 0);
       wait(500);
     end
-   else if SmeltPerfect = 1 then
+    else if SmeltPerfect = 1 then
     begin
       ClearJournal;
       wait(500);
@@ -253,7 +257,7 @@ repeat
     end;
   end;
 
-  if InJournal('Success') <> -1 then
+  if InJournal('Success') > -1 then
   begin
     wait(500);
     Findtype(ItemType, backpack);
@@ -265,7 +269,7 @@ end;
 
 procedure CheckHammer;
 begin
-  if (ObjAtLayerEx(RhandLayer, self) = 0) then
+  if ObjAtLayerEx(RhandLayer, self) = 0 then
   begin
     UseObject(FindType(HammerType, Backpack));
     UoSay('Taking a new hammer..');
@@ -285,7 +289,7 @@ begin
   FindType(ItemType, PerfectBag);
   itemCount := FindCount;
   if SmeltPerfect = 0 then
-  AddToSystemJournal('Perfect: ' + IntToStr(itemCount));
+    AddToSystemJournal('Perfect: ' + IntToStr(itemCount));
   Wait(100);
   FindType(ItemType, ExceptionalBag);
   itemCount := FindCount;
@@ -306,12 +310,12 @@ begin
 end;
 
 Begin //the main loop
-  while (not Dead) do
+  while not Dead do
   begin
     CheckHammer;
     CraftItem;
-	CheckStopConditions;
-	Resmelt;
+    CheckStopConditions;
+    Resmelt;
     CheckCounts;
   end;
 End.
