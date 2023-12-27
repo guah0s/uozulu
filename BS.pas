@@ -29,31 +29,24 @@ const
   HammerType = $13E3;
   TongsType = $0FBB;
   SmeltExcept = 1; // 1 = smelt exceptional items into ingots, 0 = store exceptional items in the ExceptionalBag
+  SmeltPerfect = 1; // 1 = smelt perfect items into ingots, 0 = store perfect items in the PerfectBag
 
   MAX_EXCEPTIONAL_COUNT = 999;  // Adjust the maximum count as needed (don't forget to set SmeltExcept = 0)
-  MAX_PERFECT_COUNT = 999;      // Adjust the maximum count as needed
+  MAX_PERFECT_COUNT = 999;      // Adjust the maximum count as needed (don't forget to set SmeltPerfect = 0)
   MAX_LEGENDARY_COUNT = 999;    // Adjust the maximum count as needed
 
 procedure Resmelt;
 begin
   repeat
+    Clearjournal();
+    UseObject(FindType(TongsType, Backpack));
+    wait(500);
     findtype(ItemType, backpack);
-    
-    if FindCount() > 0 then
-    begin
-      Clearjournal();
-      UseObject(FindType(TongsType, Backpack));
-      wait(500);
-      findtype(ItemType, backpack);
-      
-      if FindCount() > 0 then
-      begin
-        WaitTargetObject(finditem);
-        wait(1000);
-        WaitTargetObject(ForgeObj);
-        wait(3000);
-      end;
-    end;
+    WaitTargetObject(finditem);
+    wait(1000);
+    WaitTargetObject(ForgeObj);
+    wait(3000);
+	FindType(ItemType, backpack)
   until FindCount() = 0;
 end;
 
@@ -87,7 +80,7 @@ begin
   wait(500);
   WaitGump('3010');
   WaitGump('0x' + IntToHex(ItemType, 4));
-  wait(500);
+  wait(1000);
 end;
 
 procedure HandleGumpsKryss(ItemType: Integer);
@@ -96,7 +89,7 @@ begin
   wait(500);
   WaitGump('3020');
   WaitGump('0x' + IntToHex(ItemType, 4));
-  wait(500);
+  wait(1000);
 end;
 
 procedure HandleGumpsSpear(ItemType: Integer);
@@ -105,7 +98,7 @@ begin
   wait(500);
   WaitGump('3020');
   WaitGump('0x' + IntToHex(ItemType, 4));
-  wait(500);
+  wait(1000);
 end;
 
 procedure HandleGumpsBreastplate(ItemType: Integer);
@@ -114,7 +107,7 @@ begin
   wait(500);
   WaitGump('1001');
   WaitGump('0x' + IntToHex(ItemType, 4));
-  wait(500);
+  wait(1000);
 end;
 
 procedure HandleGumpsGloves(ItemType: Integer);
@@ -123,7 +116,7 @@ begin
   wait(500);
   WaitGump('1001');
   WaitGump('0x' + IntToHex(ItemType, 4));
-  wait(500);
+  wait(1000);
 end;
 
 procedure HandleGumpsGorget(ItemType: Integer);
@@ -132,7 +125,7 @@ begin
   wait(500);
   WaitGump('1001');
   WaitGump('0x' + IntToHex(ItemType, 4));
-  wait(500);
+  wait(1000);
 end;
 
 procedure HandleGumpsHelmet(ItemType: Integer);
@@ -141,7 +134,7 @@ begin
   wait(500);
   WaitGump('1001');
   WaitGump('0x' + IntToHex(ItemType, 4));
-  wait(500);
+  wait(1000);
 end;
 
 procedure HandleGumpsLegs(ItemType: Integer);
@@ -150,7 +143,7 @@ begin
   wait(500);
   WaitGump('1001');
   WaitGump('0x' + IntToHex(ItemType, 4));
-  wait(500);
+  wait(1000);
 end;
 
 procedure HandleGumpsArms(ItemType: Integer);
@@ -159,7 +152,7 @@ begin
   wait(500);
   WaitGump('1001');
   WaitGump('0x' + IntToHex(ItemType, 4));
-  wait(500);
+  wait(1000);
 end;
 
 procedure HandleGumpsShield(ItemType: Integer);
@@ -167,7 +160,7 @@ begin
   WaitGump('200'); // Change for item type
   wait(500);
   WaitGump('0x' + IntToHex(ItemType, 4));
-  wait(500);
+  wait(1000);
 end;
 
 procedure CraftItem;
@@ -175,7 +168,7 @@ begin
 	UseObject(ObjAtLayerEx(RhandLayer, self));
 	findtype(Ingots, backpack);
 	WaitTargetObject(finditem);
-	wait(1000);
+	wait(2000);
 	if ItemType = $13FE then
 	HandleGumpsKatana(ItemType);
 	if ItemType = $1401 then
@@ -197,12 +190,10 @@ begin
 	if ItemType = $1B76 then
 	HandleGumpsShield(ItemType);
 	
-	
 repeat
-    wait(500);
+    wait(1000);
   until (InJournalBetweenTimes('stop', TimeStart, Now) <> -1) or (InJournal('Cancelled') <> -1);
-
-  wait(100);
+  wait(500);
 
   if InJournal('Legendary') > -1 then
   begin
@@ -211,17 +202,31 @@ repeat
     Findtype(ItemType, backpack);
     wait(100);
     MoveItem(finditem, 0, LegendaryBag, 0, 0, 0);
-    wait(100);
+    wait(500);
   end;
 
   if InJournal('Perfect') > -1 then
   begin
     UoSay('That one looks really good! (Perfect)');
-    ClearJournal;
-    Findtype(ItemType, backpack);
-    wait(100);
-    MoveItem(finditem, 0, PerfectBag, 0, 0, 0);
-    wait(100);
+	
+   if SmeltPerfect = 0 then
+    begin
+      ClearJournal;
+      wait(500);
+      Findtype(ItemType, backpack);
+      wait(100);
+      MoveItem(finditem, 0, PerfectBag, 0, 0, 0);
+      wait(500);
+    end
+   else if SmeltPerfect = 1 then
+    begin
+      ClearJournal;
+      wait(500);
+      Findtype(ItemType, backpack);
+      wait(100);
+      MoveItem(finditem, 0, CharBackpack, 0, 0, 0);
+      wait(500);
+    end;
   end;
 
   if InJournal('Exceptional') > -1 then
@@ -235,7 +240,7 @@ repeat
       Findtype(ItemType, backpack);
       wait(100);
       MoveItem(finditem, 0, ExceptionalBag, 0, 0, 0);
-      wait(100);
+      wait(500);
     end
     else if SmeltExcept = 1 then
     begin
@@ -244,7 +249,7 @@ repeat
       Findtype(ItemType, backpack);
       wait(100);
       MoveItem(finditem, 0, CharBackpack, 0, 0, 0);
-      wait(100);
+      wait(500);
     end;
   end;
 
@@ -254,7 +259,7 @@ repeat
     Findtype(ItemType, backpack);
     wait(100);
     MoveItem(finditem, 0, CharBackpack, 0, 0, 0);
-    wait(100);
+    wait(500);
   end;
 end;
 
@@ -263,7 +268,7 @@ begin
   if (ObjAtLayerEx(RhandLayer, self) = 0) then
   begin
     UseObject(FindType(HammerType, Backpack));
-    UoSay('Another hammer cracked!');
+    UoSay('Taking a new hammer..');
   end;
 end;
 
@@ -279,6 +284,7 @@ begin
   Wait(100);
   FindType(ItemType, PerfectBag);
   itemCount := FindCount;
+  if SmeltPerfect = 0 then
   AddToSystemJournal('Perfect: ' + IntToStr(itemCount));
   Wait(100);
   FindType(ItemType, ExceptionalBag);
