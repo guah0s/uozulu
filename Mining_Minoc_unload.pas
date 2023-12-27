@@ -97,16 +97,7 @@ Begin
   end;
 End;
 
-procedure DropMap;
-begin
-  repeat
-    FindTypeEx($14ED, $ffff, backpack, False);
-    if (findcount > 0) then
-      Drop(finditem, 0, 0, 0, 0);
-    wait(100);
-    checksave;
-  until findcount = 0;
-end;
+
 
 procedure randomstep();
 var
@@ -165,24 +156,23 @@ m:
   NewMoveXY(BankX, BankY, true, 1, true);
   UoSay('bank');
   wait(1000);
-
   AddToSystemJournal('Storing Ingots into the bank:');
   AddToSystemJournal(
   'Iron:' + IntToStr(CountEx(IngotType, $0000, backpack)) + ' ' +
-  'Copper:' + IntToStr(CountEx(IngotType, $08EB, backpack)) + ' ' +
+  'Copper:' + IntToStr(CountEx(IngotType, $0602, backpack)) + ' ' +
   'BD:' + IntToStr(CountEx(IngotType, $0425, backpack)) + ' ' +
   'Pagan:' + IntToStr(CountEx(IngotType, $050C, backpack)) + ' ' +
-  'Silver:' + IntToStr(CountEx(IngotType, $04EB, backpack)) + ' ' +
+  'Silver:' + IntToStr(CountEx(IngotType, $03E9, backpack)) + ' ' +
   'Spectral:' + IntToStr(CountEx(IngotType, $0483, backpack)) + ' ' +
   'Lava:' + IntToStr(CountEx(IngotType, $0486, backpack)) + ' ' +
-  'Ice:' + IntToStr(CountEx(IngotType, $0480, backpack)) + ' ' +
+  'Ice:' + IntToStr(CountEx(IngotType, $04E7, backpack)) + ' ' +
   'Mythril:' + IntToStr(CountEx(IngotType, $0492, backpack)) + ' ' +
   'Basilisk:' + IntToStr(CountEx(IngotType, $0487, backpack)) + ' ' +
   'Sun:' + IntToStr(CountEx(IngotType, $0514, backpack)) + ' ' +
   'Daedra:' + IntToStr(CountEx(IngotType, $0494, backpack)) + ' ' +
   'Doom:' + IntToStr(CountEx(IngotType, $049F, backpack)) + ' ' +
-  'Zulu:' + IntToStr(CountEx(IngotType, $0488, backpack))
-);
+  'Zulu:' + IntToStr(CountEx(IngotType, $0488, backpack)));
+wait(2000);
 
 g:
   FindType($1BF2, backpack);
@@ -192,7 +182,24 @@ g:
     wait(1000);
     goto g;
   end;
-
+  
+	AddToSystemJournal('Total ingots in the bank:');
+	AddToSystemJournal(
+  'Iron:' + IntToStr(CountEx(IngotType, $0000, IngotChest)) + ' ' +
+  'Copper:' + IntToStr(CountEx(IngotType, $0602, IngotChest)) + ' ' +
+  'BD:' + IntToStr(CountEx(IngotType, $0425, IngotChest)) + ' ' +
+  'Pagan:' + IntToStr(CountEx(IngotType, $050C, IngotChest)) + ' ' +
+  'Silver:' + IntToStr(CountEx(IngotType, $03E9, IngotChest)) + ' ' +
+  'Spectral:' + IntToStr(CountEx(IngotType, $0483, IngotChest)) + ' ' +
+  'Lava:' + IntToStr(CountEx(IngotType, $0486, IngotChest)) + ' ' +
+  'Ice:' + IntToStr(CountEx(IngotType, $04E7, IngotChest)) + ' ' +
+  'Mythril:' + IntToStr(CountEx(IngotType, $0492, IngotChest)) + ' ' +
+  'Basilisk:' + IntToStr(CountEx(IngotType, $0487, IngotChest)) + ' ' +
+  'Sun:' + IntToStr(CountEx(IngotType, $0514, IngotChest)) + ' ' +
+  'Daedra:' + IntToStr(CountEx(IngotType, $0494, IngotChest)) + ' ' +
+  'Doom:' + IntToStr(CountEx(IngotType, $049F, IngotChest)) + ' ' +
+  'Zulu:' + IntToStr(CountEx(IngotType, $0488, IngotChest)));
+	wait(2000);
   AddToSystemJournal('Going back to the mine..');
 
   NewMoveXY(2563, 529, true, 1, true);
@@ -209,9 +216,8 @@ Begin
       randomstep;
       FindDistance := 2;
       MiningAround;
-      DropMap;
       CheckPick
-      If weight > (MaxWeight - 40) then
+      If weight > (MaxWeight - 30) then
         //weight left before unload
         BankUnload;
       wait(3000);
