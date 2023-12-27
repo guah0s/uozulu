@@ -12,8 +12,16 @@ const
   ExceptionalBag = $5E66B301;
 
   // Item to craft:
-  // ItemType = $1401; // Kriss
+  //ItemType = $1401; // Kryss
   ItemType = $13FE; // Katana
+  //ItemType = $0F63; // Spear
+  //ItemType = $1415; // Breastplate
+  //ItemType = $1414; // Gloves
+  //ItemType = $1413; // Gorget
+  //ItemType = $1412; // Helmet
+  //ItemType = $1411; // Legs
+  //ItemType = $1410; // Arms
+  //ItemType = $1B76; // Shield
 
   // Tools and Objects:
   Ingots = $1BF2;
@@ -22,7 +30,7 @@ const
   TongsType = $0FBB;
   SmeltExcept = 1; // 1 = smelt exceptional items into ingots, 0 = store exceptional items in the ExceptionalBag
 
-  MAX_EXCEPTIONAL_COUNT = 999;  // Adjust the maximum count as needed
+  MAX_EXCEPTIONAL_COUNT = 999;  // Adjust the maximum count as needed (don't forget to set SmeltExcept = 0)
   MAX_PERFECT_COUNT = 999;      // Adjust the maximum count as needed
   MAX_LEGENDARY_COUNT = 999;    // Adjust the maximum count as needed
 
@@ -39,6 +47,7 @@ begin
     wait(1000);
     WaitTargetObject(ForgeObj);
     wait(3000);
+	findtype(ItemType, backpack);
   end;
 end;
 
@@ -66,19 +75,124 @@ begin
   end;
 end;
 
-procedure CraftItem;
+procedure HandleGumpsKatana(ItemType: Integer);
 begin
-  UseObject(ObjAtLayerEx(RhandLayer, self));
-  findtype(Ingots, backpack);
-  WaitTargetObject(finditem);
-  wait(1000);
-  WaitGump('300'); // Change For item type
+  WaitGump('300'); // Change for item type
   wait(500);
   WaitGump('3010');
-  WaitGump('0x' + IntToHex(ItemType, 4)); 
+  WaitGump('0x' + IntToHex(ItemType, 4));
   wait(500);
+end;
 
-  repeat
+procedure HandleGumpsKryss(ItemType: Integer);
+begin
+  WaitGump('300'); // Change for item type
+  wait(500);
+  WaitGump('3020');
+  WaitGump('0x' + IntToHex(ItemType, 4));
+  wait(500);
+end;
+
+procedure HandleGumpsSpear(ItemType: Integer);
+begin
+  WaitGump('300'); // Change for item type
+  wait(500);
+  WaitGump('3020');
+  WaitGump('0x' + IntToHex(ItemType, 4));
+  wait(500);
+end;
+
+procedure HandleGumpsBreastplate(ItemType: Integer);
+begin
+  WaitGump('100'); // Change for item type
+  wait(500);
+  WaitGump('1001');
+  WaitGump('0x' + IntToHex(ItemType, 4));
+  wait(500);
+end;
+
+procedure HandleGumpsGloves(ItemType: Integer);
+begin
+  WaitGump('100'); // Change for item type
+  wait(500);
+  WaitGump('1001');
+  WaitGump('0x' + IntToHex(ItemType, 4));
+  wait(500);
+end;
+
+procedure HandleGumpsGorget(ItemType: Integer);
+begin
+  WaitGump('100'); // Change for item type
+  wait(500);
+  WaitGump('1001');
+  WaitGump('0x' + IntToHex(ItemType, 4));
+  wait(500);
+end;
+
+procedure HandleGumpsHelmet(ItemType: Integer);
+begin
+  WaitGump('100'); // Change for item type
+  wait(500);
+  WaitGump('1001');
+  WaitGump('0x' + IntToHex(ItemType, 4));
+  wait(500);
+end;
+
+procedure HandleGumpsLegs(ItemType: Integer);
+begin
+  WaitGump('100'); // Change for item type
+  wait(500);
+  WaitGump('1001');
+  WaitGump('0x' + IntToHex(ItemType, 4));
+  wait(500);
+end;
+
+procedure HandleGumpsArms(ItemType: Integer);
+begin
+  WaitGump('100'); // Change for item type
+  wait(500);
+  WaitGump('1001');
+  WaitGump('0x' + IntToHex(ItemType, 4));
+  wait(500);
+end;
+
+procedure HandleGumpsShield(ItemType: Integer);
+begin
+  WaitGump('200'); // Change for item type
+  wait(500);
+  WaitGump('0x' + IntToHex(ItemType, 4));
+  wait(500);
+end;
+
+procedure CraftItem;
+begin
+	UseObject(ObjAtLayerEx(RhandLayer, self));
+	findtype(Ingots, backpack);
+	WaitTargetObject(finditem);
+	wait(1000);
+	if ItemType = $13FE then
+	HandleGumpsKatana(ItemType);
+	if ItemType = $1401 then
+	HandleGumpsKryss(ItemType);
+	if ItemType = $0F63 then
+	HandleGumpsSpear(ItemType);	
+	if ItemType = $1415 then
+	HandleGumpsBreastplate(ItemType);
+	if ItemType = $1414 then
+	HandleGumpsGloves(ItemType);
+	if ItemType = $1413 then
+	HandleGumpsGloves(ItemType);
+	if ItemType = $1412 then
+	HandleGumpsHelmet(ItemType);
+	if ItemType = $1411 then
+	HandleGumpsLegs(ItemType);
+	if ItemType = $1410 then
+	HandleGumpsLegs(ItemType);
+	if ItemType = $1B76 then
+	HandleGumpsShield(ItemType);
+	
+	
+repeat
     wait(500);
   until (InJournalBetweenTimes('stop', TimeStart, Now) <> -1) or (InJournal('Cancelled') <> -1);
 
@@ -86,7 +200,6 @@ begin
 
   if InJournal('Legendary') > -1 then
   begin
-    CheckStopConditions;
     UoSay('Finally the Masterpiece! (Legendary)');
     ClearJournal;
     Findtype(ItemType, backpack);
@@ -97,7 +210,6 @@ begin
 
   if InJournal('Perfect') > -1 then
   begin
-    CheckStopConditions;
     UoSay('That one looks really good! (Perfect)');
     ClearJournal;
     Findtype(ItemType, backpack);
@@ -112,7 +224,6 @@ begin
 
     if SmeltExcept = 0 then
     begin
-      CheckStopConditions;
       ClearJournal;
       wait(500);
       Findtype(ItemType, backpack);
@@ -185,10 +296,9 @@ end;
 Begin //the main loop
   while (not Dead) do
   begin
-    CancelMenu;
-    ClearJournal();
     CheckHammer;
     CraftItem;
+	CheckStopConditions;
 	Resmelt;
     CheckCounts;
   end;
