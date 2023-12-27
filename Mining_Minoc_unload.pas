@@ -149,15 +149,8 @@ m:
     ignore(finditem);
 
   ignoreReset;
-
-  AddToSystemJournal('Moving to the bank..');
-  NewMoveXY(2563, 529, true, 1, true);
-  NewMoveXY(2510, 540, true, 1, true);
-  NewMoveXY(BankX, BankY, true, 1, true);
-  UoSay('bank');
-  wait(1000);
-  AddToSystemJournal('Storing Ingots into the bank:');
-  AddToSystemJournal(
+	AddToSystemJournal('Ingots smelted:');
+	AddToSystemJournal(
   'Iron:' + IntToStr(CountEx(IngotType, $0000, backpack)) + ' ' +
   'Copper:' + IntToStr(CountEx(IngotType, $0602, backpack)) + ' ' +
   'BD:' + IntToStr(CountEx(IngotType, $0425, backpack)) + ' ' +
@@ -172,7 +165,13 @@ m:
   'Daedra:' + IntToStr(CountEx(IngotType, $0494, backpack)) + ' ' +
   'Doom:' + IntToStr(CountEx(IngotType, $049F, backpack)) + ' ' +
   'Zulu:' + IntToStr(CountEx(IngotType, $0488, backpack)));
-wait(2000);
+	wait(3000);
+  AddToSystemJournal('Moving to the bank..');
+  NewMoveXY(2563, 529, true, 1, true);
+  NewMoveXY(2510, 540, true, 1, true);
+  NewMoveXY(BankX, BankY, true, 1, true);
+  UoSay('bank');
+  wait(1000);
 
 g:
   FindType($1BF2, backpack);
@@ -199,7 +198,7 @@ g:
   'Daedra:' + IntToStr(CountEx(IngotType, $0494, IngotChest)) + ' ' +
   'Doom:' + IntToStr(CountEx(IngotType, $049F, IngotChest)) + ' ' +
   'Zulu:' + IntToStr(CountEx(IngotType, $0488, IngotChest)));
-	wait(2000);
+	wait(3000);
   AddToSystemJournal('Going back to the mine..');
 
   NewMoveXY(2563, 529, true, 1, true);
@@ -217,8 +216,7 @@ Begin
       FindDistance := 2;
       MiningAround;
       CheckPick
-      If weight > (MaxWeight - 30) then
-        //weight left before unload
+      If weight > (MaxWeight - 30) then          //weight left before unload
         BankUnload;
       wait(3000);
     end;
