@@ -36,19 +36,25 @@ const
 
 procedure Resmelt;
 begin
-  findtype(ItemType, backpack);
-  while FindCount() > 0 do
-  begin
-    Clearjournal();
-    UseObject(FindType(TongsType, Backpack));
-    wait(500);
+  repeat
     findtype(ItemType, backpack);
-    WaitTargetObject(finditem);
-    wait(1000);
-    WaitTargetObject(ForgeObj);
-    wait(3000);
-	findtype(ItemType, backpack);
-  end;
+    
+    if FindCount() > 0 then
+    begin
+      Clearjournal();
+      UseObject(FindType(TongsType, Backpack));
+      wait(500);
+      findtype(ItemType, backpack);
+      
+      if FindCount() > 0 then
+      begin
+        WaitTargetObject(finditem);
+        wait(1000);
+        WaitTargetObject(ForgeObj);
+        wait(3000);
+      end;
+    end;
+  until FindCount() = 0;
 end;
 
 procedure CheckStopConditions;
